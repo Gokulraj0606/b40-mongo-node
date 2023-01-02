@@ -17,10 +17,6 @@ const client = new MongoClient(MONGO_URL); //ex dial in phone
 await client.connect(); //ex dial in phonr
 console.log("Mongo is connected !!")
 
-
-
-
-
 // xml json text
 // middleware - express.json()  (inbulit middleware)
 // app.use -> intercepts -> applies express.json()
