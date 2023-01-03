@@ -1,5 +1,5 @@
 import express from "express"
-import { client } from "../index.js"
+import { getMovies, getMoviesById, createMovies, deleteMoviesById, updateMoviesById } from "../services/movies.service.js";
 
 
 const router = express.Router();
@@ -13,11 +13,7 @@ router.get("/", async function (request, response) {
     // db.movies.find({})
 
     // cursor pagination / cursor -> Array // toArray()
-    const movies = await client
-        .db("b40wd")
-        .collection("movies")
-        .find(request.query)
-        .toArray();
+    const movies = await getMovies(request);
     // console.log(movies)
 
     response.send(movies);
@@ -30,10 +26,7 @@ router.get("/:id", async function (request, response) {
     // const movie = movies.find((mv) => mv.id === id)
 
     // // db.movies.findone({id : "100"})
-    const movie = await client
-        .db("b40wd")
-        .collection("movies")
-        .findOne({ id: id });
+    const movie = await getMoviesById(id);
 
     console.log(movie)
     // response.send(movie);
@@ -44,7 +37,7 @@ router.post("/", async function (request, response) {
     const data = request.body
     console.log(data)
     // db.movies.insertMany(data)
-    const result = await client.db("b40wd").collection("movies").insertMany(data);
+    const result = await createMovies(data);
 
 
     response.send(result);
@@ -57,10 +50,7 @@ router.delete("/:id", async function (request, response) {
     // const movie = movies.find((mv) => mv.id === id)
 
 
-    const result = await client
-        .db("b40wd")
-        .collection("movies")
-        .deleteOne({ id: id });
+    const result = await deleteMoviesById(id);
 
     console.log(result)
     // response.send(movie);
@@ -77,10 +67,7 @@ router.put("/:id", async function (request, response) {
     // const movie = movies.find((mv) => mv.id === id)
 
 
-    const result = await client
-        .db("b40wd")
-        .collection("movies")
-        .updateOne({ id: id }, { $set: data });
+    const result = await updateMoviesById(id, data);
 
     console.log(result)
     response.send(result);
@@ -88,3 +75,4 @@ router.put("/:id", async function (request, response) {
 });
 
 export default router
+
