@@ -1,11 +1,12 @@
 import express from "express"
+import { auth } from "../middleware/auth.js";
 import { getMovies, getMoviesById, createMovies, deleteMoviesById, updateMoviesById } from "../services/movies.service.js";
 
 
 const router = express.Router();
 
 // http://localhost:4000/movies
-router.get("/", async function (request, response) {
+router.get("/", auth, async function (request, response) {
     if (request.query.rating) {
         request.query.rating = +request.query.rating
     }
@@ -20,7 +21,7 @@ router.get("/", async function (request, response) {
 })
 
 // http://localhost:4000/movies/99
-router.get("/:id", async function (request, response) {
+router.get("/:id", auth, async function (request, response) {
     const { id } = request.params
     // console.log(request.params, id)
     // const movie = movies.find((mv) => mv.id === id)
@@ -33,7 +34,7 @@ router.get("/:id", async function (request, response) {
     movie ? response.send(movie) : response.status(404).send({ message: "movies not found" })
 });
 
-router.post("/", async function (request, response) {
+router.post("/", auth, async function (request, response) {
     const data = request.body
     console.log(data)
     // db.movies.insertMany(data)
@@ -43,7 +44,7 @@ router.post("/", async function (request, response) {
     response.send(result);
 })
 
-router.delete("/:id", async function (request, response) {
+router.delete("/:id", auth, async function (request, response) {
     const { id } = request.params
     // db.movies.deleteOne({id: '100'})
 
