@@ -24,7 +24,7 @@ router.post("/signup", async function (request, response) {
     }
     else {
         const hashedPassword = await generateHashedPassword(password)
-        const result = await createUser({ username: username, password: hashedPassword });
+        const result = await createUser({ username: username, password: hashedPassword, roleId: 1 });
 
 
         response.send(result);
@@ -50,7 +50,7 @@ router.post("/login", async function (request, response) {
         console.log(isPasswordCheck);
         if (isPasswordCheck) {
             const token = jwt.sign({ id: userFromDB._id }, process.env.SECRET_KEY)
-            response.send({ message: "Successfull Login", token: token })
+            response.send({ message: "Successfull Login", token: token, roleId: userFromDB.roleId })
         }
         else {
             response.status(401).send({ message: "Invalid Credentials" })
